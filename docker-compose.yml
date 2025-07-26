@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: pg_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+
+  frontend:
+    image: 'vikashkumar99/python-4-tier-frontend'
+    container_name: frontend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+
+  backend:
+    image: 'vikashkumar99/python-4-tier-backend'
+    container_name: backend
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  pgdata:
+

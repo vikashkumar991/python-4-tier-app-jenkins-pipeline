@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - User List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light text-dark">
+  <div class="container mt-5">
+    <h2>Registered Users (From Redis/Postgres)</h2>
+    <button class="btn btn-success mb-3" onclick="fetchUsers()">Load Users</button>
+    <ul id="userList" class="list-group"></ul>
+  </div>
+
+  <script>
+    async function fetchUsers() {
+      const res = await fetch('/users');
+      const data = await res.json();
+      const list = document.getElementById('userList');
+      list.innerHTML = '';
+      data.users.forEach(user => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.innerText = `${user.name} (${user.email})`;
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
+
